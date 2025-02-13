@@ -11,7 +11,7 @@ screen_fill_color = (32, 52, 71)
 screen = pygame.display.set_mode((screen_width,screen_height))
 pygame.display.set_caption("Awesome Shooter Game")
 
-FIGHTER_STEP = 0.5
+FIGHTER_STEP = 1
 fighter_image = pygame.image.load('images/fighter.png') # импорт изображения
 fighter_width, fighter_height = fighter_image.get_size() # получить размер изображения
 fighter_x, fighter_y = screen_width / 2 - fighter_width / 2, screen_height - fighter_height # начальное местоположение
@@ -24,11 +24,15 @@ ball_x, ball_y = fighter_x + fighter_width / 2 - ball_width / 2, fighter_y - bal
 ball_was_fired = False
 
 ALIEN_STEP = 0.1
+alien_speed = ALIEN_STEP
 alien_image = pygame.image.load('images/alien.png')
 alien_width, alien_height = alien_image.get_size()
 alien_x, alien_y = randint(0, screen_width - alien_width), 0
 
 game_is_running = True
+
+game_score = 0
+
 while game_is_running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -56,7 +60,7 @@ while game_is_running:
     if ball_was_fired and ball_y + ball_height < 0:
         ball_was_fired = False #когда шарик выходит за пределы экраный значение меняется на false
 
-    alien_y += ALIEN_STEP #на каждой итерации добалвяем alien_step
+    alien_y += alien_speed #на каждой итерации добалвяем alien_step
 
     if ball_was_fired:
         ball_y -= BALL_STEP # перемешение шарика вверх по экрану
@@ -68,10 +72,21 @@ while game_is_running:
     if ball_was_fired:
         screen.blit(ball_image, (ball_x, ball_y))
 
+    game_score_text = game_font.render(f"Your Score is: {game_score}", True, 'white')
+    screen.blit(game_score_text, (20, 20))
+
     pygame.display.update()
 
     if alien_y + alien_height > fighter_y:
         game_is_running = False
+
+    if (ball_was_fired and
+            alien_x < ball_x < alien_x + alien_width - ball_width and
+            alien_y < ball_y < alien_y + alien_height - ball_height):
+        ball_was_fired = False
+        alien_x, alien_y = randint(0, screen_width - alien_width), 0
+        alien_speed += ALIEN_STEP / 2 #Увеличение скорости
+        game_score += 1
 
 game_over_text = game_font.render("Game Over", True, 'white') #текс
 game_over_rect = game_over_text.get_rect() #помещение текста в прямоугольник

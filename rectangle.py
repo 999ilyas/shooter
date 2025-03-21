@@ -4,7 +4,7 @@ import sys
 
 pygame.init() #инициализация новой игры
 
-screen_width,screen_height = 800, 600
+screen_width,screen_height = 800, 600.
 screen = pygame.display.set_mode((screen_width,screen_height)) #ширина,высота
 pygame.display.set_caption('My Pygame') #название игры
 fill_color = (32, 52, 71)

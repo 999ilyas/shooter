@@ -4,6 +4,7 @@ import sys
 
 pygame.init() #инициализация новой игры
 ...
+.
 
 screen_width,screen_height = 800, 600.
 screen = pygame.display.set_mode((screen_width,screen_height)) #ширина,высота
